@@ -46,8 +46,11 @@ const getAllUser = async (req, res) => {
 const getOneUser = async (req, res) => {
     let id = req.params.id  // Récupérer l'ID de l'utilisateur depuis l'URL
 
+    const { tenantDbName } = req.params;
+    const dbTenant = await getTenantDB(tenantDbName);
+
     // Chercher un utilisateur avec l'ID correspondant
-    let user = await User.findOne({ where: { id: id } })
+    let user = await dbTenant.users.findOne({ where: { id: id } })
     
     // Envoyer l'utilisateur trouvé avec un statut 200
     res.status(200).send(user)
@@ -58,8 +61,11 @@ const getOneUser = async (req, res) => {
 const UpdateUser = async (req, res) => {
     let id = req.params.id  // Récupérer l'ID de l'utilisateur à mettre à jour
 
+    const { tenantDbName } = req.params;
+    const dbTenant = await getTenantDB(tenantDbName);
+
     // Mettre à jour l'utilisateur avec les nouvelles données de la requête (req.body)
-    const user = await User.update(req.body, { where: { id: id } })
+    const user = await dbTenant.users.update(req.body, { where: { id: id } })
     
     // Envoyer la réponse de mise à jour avec un statut 200
     res.status(200).send(user)
@@ -70,8 +76,11 @@ const UpdateUser = async (req, res) => {
 const DeleteUser = async (req, res) => {
     let id = req.params.id  // Récupérer l'ID de l'utilisateur à supprimer
 
+    const { tenantDbName } = req.params;
+    const dbTenant = await getTenantDB(tenantDbName);
+
     // Supprimer l'utilisateur de la base de données
-    await User.destroy({ where: { id: id } })
+    await dbTenant.users.destroy({ where: { id: id } })
     
     // Envoyer une réponse indiquant que l'utilisateur a été supprimé
     res.status(200).send('User deleted')
