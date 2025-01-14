@@ -10,6 +10,7 @@ const Tenant = db.tenant
 const RegisterTenant = async (req,res) =>{
     const { name, email, password } = req.body;
     const dbName = `tenant_${Date.now()}`; // Nom de la base de données du Tenant
+    const domain = `${name.replace(/\s/g, '').toLowerCase()}.localhost`; // Nom de domaine du Tenant
 
     try {
         // Hachage du mot de passe
@@ -20,6 +21,7 @@ const RegisterTenant = async (req,res) =>{
             name,
             email,
             database: dbName,
+            domain: domain,
             password: hashedPassword
         })
 

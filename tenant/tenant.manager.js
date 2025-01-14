@@ -21,13 +21,11 @@ const getTenantDB = async (tenantDbName)=>{
         console.log(`Connected to tenant DB: ${tenantDbName}`)
 
         const dbTenant = {}
-
         dbTenant.Sequelize = Sequelize
         dbTenant.sequelizeTenant = sequelizeTenant
-
         dbTenant.users = require('../models/UserModel')(sequelizeTenant, DataTypes)
 
-        dbTenant.sequelizeTenant.sync({force:false})
+        await dbTenant.sequelizeTenant.sync({force:false})
         .then(()=>{
             console.log('yes re-sync Tenant done!')
         })

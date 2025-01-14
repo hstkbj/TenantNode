@@ -41,7 +41,7 @@ db.Sequelize = Sequelize
 db.sequelize = sequelize
 
 // Importer le modèle 'UserModel.js' et l'associer à l'instance Sequelize
-db.users = require('./UserModel.js')(sequelize, DataTypes)
+// db.users = require('./UserModel.js')(sequelize, DataTypes)
 db.tenant = require('./TenantModel.js')(sequelize, DataTypes)
 
 

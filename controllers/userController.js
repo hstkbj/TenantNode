@@ -1,12 +1,13 @@
 // Importer les modèles définis dans le dossier models
-const db = require('../models/index')
+const { getTenantDB } = require('../tenant/tenant.manager');
 const bcrypt = require('bcrypt');
 
-// Récupérer le modèle "User" de la base de données
-const User = db.users
 
 // Ajouter un nouvel utilisateur
 const addUser = async (req, res) => {
+
+    const { tenantDbName } = req.params;
+    const dbTenant = await getTenantDB(tenantDbName);
 
     // Hachage du mot de passe avant de l'enregistrer
     const salt = await bcrypt.genSalt(10);  // Générer un sel avec un facteur de coût de 10
@@ -20,7 +21,7 @@ const addUser = async (req, res) => {
     }
 
     // Insérer les données dans la table "users" en utilisant Sequelize
-    const user = await User.create(data)
+    const user = await dbTenant.users.create(data)
     
     // Envoyer la réponse avec un statut 200 et l'utilisateur créé
     res.status(200).send(user)
@@ -29,8 +30,12 @@ const addUser = async (req, res) => {
 
 // Récupérer tous les utilisateurs
 const getAllUser = async (req, res) => {
+
+    const { tenantDbName } = req.params;
+    const dbTenant = await getTenantDB(tenantDbName);
+
     // Récupérer tous les utilisateurs de la table "users"
-    let users = await User.findAll({})
+    let users = await dbTenant.users.findAll({})
     
     // Envoyer la liste des utilisateurs avec un statut 200
     res.status(200).send(users)

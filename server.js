@@ -29,6 +29,9 @@ app.use(express.urlencoded({ extended: true }))  // 'extended: true' permet de g
 const router = require('./routes/router')
 app.use('/api', router)
 
+const routerTenant = require('./tenant/tenant.routes')
+app.use('/api', routerTenant)
+
 // Testé L'api
 app.get('/',(req,res)=>{
     res.json({message: 'Hello World'})
